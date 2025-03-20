@@ -47,7 +47,18 @@ int handle_request(int clientSocketId, ParsendRequest *request, char*tempReq){
     strcat(buf , " ");
     strcat(buf , request->version);
     strcat(buf , "\r\n");
-    size_t len = strlen()
+    size_t len = strlen(buf);
+    if(ParsedHeader_set(request , "Connection" , "close")<0){
+        printf("set header key is not working");
+    }
+    if(ParsedHeader_get(request , "Host")== NULL){
+        if(ParsedHeader_set(request, "Host" , request->host)<0){
+            printf("Set Host header key is not working");
+        }
+    }
+    if(ParsedHeader_unparse_headers(request, buf+len , (size_t)MAX_BYTES-len)<0){
+        printf("unparse failed");
+    }
 }
 void *thread_fn(void *socketNew){
     sem_wait(&semaphore);
